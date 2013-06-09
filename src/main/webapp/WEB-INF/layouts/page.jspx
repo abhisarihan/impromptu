@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root version="2.0" xmlns="http://www.w3c.org/1999/xhtml"
+   xmlns:jsp="http://java.sun.com/JSP/Page"
+   xmlns:c="http://java.sun.com/jsp/jstl/core"
+   xmlns:sec="http://www.springframework.org/security/tags"
+   xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+   xmlns:tiles="http://tiles.apache.org/tags-tiles">
+<jsp:directive.page language="java" contentType="text/html;charset=utf-8" pageEncoding="UTF-8" session="false"/>
+<jsp:output omit-xml-declaration="true" />
+<jsp:output doctype-root-element="HTML" doctype-system="about:legacy-compat" />
+
+<html lang="en">
+    <head>
+        <title><tiles:insertAttribute name="title" defaultValue="Impromptu" /></title>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <c:url var="css_url" value="/resources/css/bootstrap.css" />
+        <link rel="stylesheet" href="${css_url}" type="text/css" media="screen" />
+        <script>var ctx = '${pageContext.request.contextPath}';</script>
+    </head>
+    <body>
+        <!-- templates be here arr! -->
+        <script id="user-template" type="text/x-handlebars-template">
+			<c:url var="editProfileUrl" value="./profile" />
+				<p>
+				<div class="profile-details">
+					<div class="profile-details-image">
+						<img src="http://www.gravatar.com/avatar/${user.profilePic}"
+							width="150" height="150" />
+					</div>
+					<div class="profile-details-info">
+						<form id="myform" method="post" action="./profile">
+			  				<input type="hidden" name="name" value="value" /> 
+			  				<a class="profile-details-edit" onclick="document.getElementById('myform').submit();">
+			  					<p><h1><c:out value="{{firstName}} {{lastName}}" /></h1></p>
+								<p>Location: <c:out value="{{location}}" /></p>
+								<p>Interests: <c:out value="{{interests}}" /></p>
+			 			 	</a>
+						</form>
+					</div>
+				</div>
+				<div class="profile-timeline">
+					<c:if test="${fn:length(userEvents) == 0}">You have not been to any events yet.</c:if>
+					<c:forEach var="event" items="${userEvents}">
+						<div class="profile-timeline-content">
+							<p>
+								You have recently been to
+								<c:out value="${event.eventName}" />
+							</p>
+						</div>
+					</c:forEach>
+				</div>
+				</p>
+        </script>
+        <script id="create-event-template" type="text/x-handlebars-template">
+            <form action="events/new" method="post" class="form-horizontal event-new">
+            <fieldset>
+                <legend>Create Event</legend>
+                <label for="eventName">Event Name</label>
+                <input name="eventName" id="eventName"></input>
+                <label for="eventDescription">Description</label>
+                <input name="eventDescription" id="eventDescription"></input>
+                <label for="eventDate">Time</label>
+                <input name="eventDate" id="datepicker"></input>
+                <label for="recurring">Recurring event?</label>
+                <input type="checkbox" name="recurring" id="recurring"></input>
+                <label for="location">Location</label>
+                <input name="location" id="location"></input>
+                <div class="form-actions">
+                  <input type="submit" name="_submit" class="btn btn-primary" value="Create event"></input>
+                  <input type="submit" name="_cancel" class="btn btn-danger" value="Cancel"></input>
+                </div>
+            </fieldset>
+            </form>
+	   </script>
+	   <script id="view-event-template" type="text/x-handlebars-template">
+			<div class="event-details fluid" id="event-id">
+				<h1>
+					<c:out value="{{eventName}}" />
+				</h1>
+				<p>
+					<c:out value="{{eventDescription}}" />
+				</p>
+				<div class="event-date">
+					<h3>When?</h3>
+					<p>
+						<c:out value="{{eventDate}}" />
+					</p>
+				</div>
+				<div class="event-location">
+					<h3>Where?</h3>
+					<p>
+						<c:out value="{{location}}" />
+					</p>
+				</div>
+				<div class="event-people">
+					<h3>Who?</h3>
+					<div class="row-fluid">
+						<DIV class="span3 offset1">
+							<H5>Owners:</H5>
+							{{#each admins}}
+								<li>{{this.firstName}} {{this.lastName}}</li>
+							{{/each}}
+						</DIV>
+						<DIV class="span9">
+							<H5>Attendees:</H5>
+							{{#each members}}
+								<li>{{this.firstName}} {{this.lastName}}</li>
+							{{/each}}
+						</DIV>
+					</div>
+				</div>
+				<c:choose>
+					<c:when test="${!isMember}">
+						<c:url var="joinEventUrl" value="/events/{{id}}/join"/>
+						<form class="form-horizontal" method="post" action="${joinEventUrl}">
+							<fieldset>
+								<div class="form-actions">
+									<button class="btn btn-primary">Join</button>
+								</div>
+							</fieldset>
+						</form>
+					</c:when>
+					<c:otherwise>
+						<c:url var="leaveEventUrl" value="/events/{{id}}/leave"/>
+						<form class="form-horizontal" method="post" action="${leaveEventUrl}">
+							<fieldset>
+								<div class="form-actions">
+									<button class="btn btn-primary">Leave</button>
+								</div>
+							</fieldset>
+						</form>
+					</c:otherwise>
+				</c:choose>
+			</div>
+			
+	   </script>
+    
+        <tiles:insertAttribute name="header" />
+        <div class="home-background" id="footer-wrap">
+            <div class="home-background container-fluid">
+                <tiles:insertAttribute name="content" />
+            </div>
+        </div>
+        
+        <tiles:insertAttribute name="footer" />
+        
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"><!--//--></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"><!--//--></script>
+        
+        <c:url var="handlebars_js" value="/resources/js/handlebars.js"/>
+        <script type="text/javascript" src="${handlebars_js}"><!--//--></script>
+        
+        <c:url var="bootstrap_collapse_js" value="/resources/js/bootstrap-collapse.js" />
+        <script type="text/javascript" src="${bootstrap_collapse_js}"><!--//--></script>
+        
+        <c:url var="bootstrap_modal_js" value="/resources/js/bootstrap-modal.js" />
+        <script type="text/javascript" src="${bootstrap_modal_js}"><!--//--></script>
+        
+        <c:url var="datepicker_js" value="/resources/js/datepicker-init.js" />
+        <script type="text/javascript" src="${datepicker_js}"><!--//--></script>
+        
+        <c:url var="home_js" value="/resources/js/home.js" />
+        <script type="text/javascript" src="${home_js}"><!--//--></script>
+    </body>
+</html>
+</jsp:root>

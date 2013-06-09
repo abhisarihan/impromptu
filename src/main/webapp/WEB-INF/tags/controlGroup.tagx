@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:spring="http://www.springframework.org/tags"
+    xmlns:form="http://www.springframework.org/tags/form">
+<jsp:directive.tag description="Renders form input with label and inline errors"/>
+<jsp:directive.attribute name="path" type="java.lang.String" required="true" description="Path to property for data binding"/>
+<jsp:directive.attribute name="label" type="java.lang.String" required="true" description="Label string for the input field"/>
+
+    <spring:bind path="${path}">
+        <div class="${status.error ? 'error ' : '' }control-group">
+            <form:label path="${path}" cssClass="control-label"><c:out value="${label}" /></form:label>
+            <div class="controls">
+                <jsp:doBody />
+                <form:errors path="${path}" cssClass="help-inline" />
+            </div>
+        </div>
+    </spring:bind>
+    
+</jsp:root>

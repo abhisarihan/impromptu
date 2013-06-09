@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+    xmlns:form="http://www.springframework.org/tags/form"
+    xmlns:tags="urn:jsptagdir:/WEB-INF/tags">
+<jsp:directive.tag description="Renders form input with label and inline errors"/>
+<jsp:directive.attribute name="path" type="java.lang.String" required="true" description="Path to property for data binding"/>
+<jsp:directive.attribute name="label" type="java.lang.String" required="true" description="Label string for the input field"/>
+<jsp:directive.attribute name="inputId" type="java.lang.String" description="optional id attribute for input field"/>
+
+    <tags:controlGroup path="${path}" label="${label}">
+        <form:input path="${path}" id="${inputId == null ? path : inputId}" />
+    </tags:controlGroup>
+    
+</jsp:root>

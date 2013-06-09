@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root version="2.0" xmlns="http://www.w3c.org/1999/xhtml"
+   xmlns:jsp="http://java.sun.com/JSP/Page"
+   xmlns:c="http://java.sun.com/jsp/jstl/core"
+   xmlns:form="http://www.springframework.org/tags/form"
+   xmlns:tags="urn:jsptagdir:/WEB-INF/tags">
+<jsp:directive.page language="java" contentType="text/html;charset=utf-8" pageEncoding="UTF-8"/>
+
+<form:form commandName="registerUserForm" action="./register" cssClass="form-horizontal">
+    <fieldset>
+        <legend>Sign me up!</legend>
+        <tags:input label="First Name" path="firstName" />
+        <tags:input label="Last Name" path="lastName" />
+        <tags:input label="Email" path="email" />
+        <tags:password label="Password" path="password" />
+        <tags:password label="Confirm password" path="confirmPassword" />
+        <tags:input label="Location" path="location" />
+        <div class="form-actions">
+            <form:button name="_submit" class="btn btn-primary">Okay</form:button>
+            <form:button name="_cancel" class="btn">Cancel</form:button>
+        </div>
+    </fieldset>
+</form:form>
+
+</jsp:root>

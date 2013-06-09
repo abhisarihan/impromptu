@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root version="2.0" xmlns="http://www.w3c.org/1999/xhtml"
+   xmlns:jsp="http://java.sun.com/JSP/Page"
+   xmlns:c="http://java.sun.com/jsp/jstl/core"
+   xmlns:form="http://www.springframework.org/tags/form">
+<jsp:directive.page language="java" contentType="text/html;charset=utf-8" pageEncoding="UTF-8" session="false"/>
+
+<c:url var="auth_url" value="/login/authenticate" />
+<c:url var="signup_url" value="/register" />
+
+<form id="login-form" action="${auth_url}" method="post" class="well">
+    <fieldset class="control-group ${not empty param.error ? 'error' : ''}">
+        <legend>Log In</legend>
+        <c:if test="${not empty param['error']}">
+            <div class="alert alert-error">
+                Your sign in information was incorrect.
+                Please try again or <a href="${signup_url}">sign up</a>.
+            </div>
+        </c:if>
+        <label class="control-label" for="login">Email</label>
+        <div class="control">
+           <input id="login" name="email" type="text" autocorrect="off" autocapitalize="off" />
+        </div>
+        <label class="control-label" for="password">Password</label>
+        <div class="control">
+           <input id="password" name="password" type="password" />
+        </div>
+        <button type="submit" class="btn btn-primary">Log in</button>
+    </fieldset>
+</form>
+		
+</jsp:root>

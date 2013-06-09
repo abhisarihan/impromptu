@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root version="2.0" xmlns="http://www.w3c.org/1999/xhtml"
+   xmlns:jsp="http://java.sun.com/JSP/page"
+   xmlns:c="http://java.sun.com/jsp/jstl/core"
+   xmlns:form="http://www.springframework.org/tags/form"
+   xmlns:tags="urn:jsptagdir:/WEB-INF/tags">
+<jsp:directive.page language="java" contentType="text/html;charset=utf-8" pageEncoding="UTF-8"/>
+
+<form:form commandName="createEventForm" action="./new" cssClass="form-horizontal">
+    <fieldset>
+        <legend>Create Event</legend>
+        <tags:input label="Event Name" path="eventName" />
+        <tags:input label="Description" path="eventDescription" />
+        <tags:input label="Time" path="eventDate" inputId="datepicker" />
+        <tags:checkbox label="Recurring event?" path="recurring" />
+        <tags:input label="Location" path="location" />
+        <div class="form-actions">
+            <form:button name="_submit" class="btn btn-primary">Create event</form:button>
+            <form:button name="_cancel" class="btn btn-danger">Cancel</form:button>
+        </div>
+    </fieldset>
+</form:form>
+</jsp:root>
